@@ -1,4 +1,8 @@
 import java.util.Scanner;
+import java.io.PrintWriter;
+import java.io.File;
+import java.util.Scanner;
+import java.io.*;
 /**
  * This is a class to define the necessary attributes and methods to conceptualize a "Student"
  * The spepcific tasks are:
@@ -20,6 +24,7 @@ public class Student{
     //7. Credits and grades of Current Terms (Multidimmentional Array)
     int id;
     String name,department,university;
+    double cgpa;
     double[][] gpa;
     String[] subjects;
     double[][][] credits;
@@ -52,20 +57,20 @@ public class Student{
     	System.out.println("Name : "+name);
     	System.out.println("Depertment : "+department);
     	System.out.println("University : "+university);
-    	System.out.println("GPA : ");
-    	for (int i = 0; i < 2; i++){
-    		for (int j = 0; j < 2; j++) {
-    			System.out.println(i+1 +"-"+ j+1 +" : " + gpa[i][j]);
-			}
-		}
-    	System.out.println("Term		Credits		Grades : ");
-    	for (int i = 0; i < 8; i++) {
-    		for (int j = 0; j < 8; j++) {
-				for (int j2 = 0; j2 < 5; j2++) {
-					System.out.println(i+1 +"-"+ j+1 +":	 "+credits[i][j][j2]+"		"+grades[i][j][j2]);
-				}
-			}
-		}
+//    	System.out.println("GPA : ");
+//    	for (int i = 0; i < 2; i++){
+//    		for (int j = 0; j < 2; j++) {
+//    			System.out.println(i+1 +"-"+ j+1 +" : " + gpa[i][j]);
+//			}
+//		}
+//    	System.out.println("Term		Credits		Grades : ");
+//    	for (int i = 0; i < 8; i++) {
+//    		for (int j = 0; j < 8; j++) {
+//				for (int j2 = 0; j2 < 5; j2++) {
+//					System.out.println(i+1 +"-"+ j+1 +":	 "+credits[i][j][j2]+"		"+grades[i][j][j2]);
+//				}
+//			}
+//		}
     }
     
     /**
@@ -75,30 +80,13 @@ public class Student{
     public void updateStudentById(int id){
         //Write your code here
     	this.id = id;
-    	System.out.println("Enter name : ");
+    	input.nextLine();
+    	System.out.print("Enter name : ");
     	name = input.nextLine();
-    	System.out.println("Enter University name : ");
+    	System.out.print("Enter University name : ");
     	university = input.nextLine();
-    	System.out.println("Enter Department name : ");
-    	department = input.nextLine();
-    	System.out.println("Enter GPA : ");
-    	for (int i = 0; i < 2; i++){
-    		for (int j = 0; j < 2; j++) {
-    			System.out.println(i+1 +"-"+ j+1 +" : ");
-    			gpa[i][j] = input.nextDouble();
-			}
-		}
-    	System.out.println("Enter Credits & Grades for each term : ");
-    	for (int i = 0; i < 8; i++) {
-    		for (int j = 0; j < 8; j++) {
-    			System.out.println("# "+i+1 +"-"+ j+1 +" : ");
-				for (int j2 = 0; j2 < 5; j2++) {
-					System.out.println("Subject "+ j2 + 1 +" : ");
-					credits[i][j][j2] = input.nextDouble();
-					grades[i][j][j2] = input.nextDouble();
-				}
-			}
-		}
+    	System.out.print("Enter Department name : ");
+    	department = input.nextLine();   	 
     }
     
     /**
@@ -107,7 +95,14 @@ public class Student{
      */
     public double computeCGPAByID(){
         // Write your code here
-        return 0.0;
+    	
+    	for(int i=1;i<=8;i++)
+    	{
+    		System.out.println("Enter GPA of Sem " + (i) +" :  ");
+    		cgpa += input.nextDouble();
+    	}
+    	
+    	return cgpa/8;
     }
     
     /**
@@ -123,8 +118,21 @@ public class Student{
      * use as many arguments as required.
      * 
      */
-    public void saveStudents(){
-        //Write your code here
+    public void saveStudent() throws IOException
+    {
+    	FileWriter outputFile = new FileWriter("output.txt",true);
+    	
+    	BufferedWriter buffer =new BufferedWriter(outputFile);
+    	
+    	PrintWriter write = new PrintWriter(buffer);
+    	write.println("  ");
+        write.println("Name  : "+name);
+        write.println("ID  : " + id);
+        write.println("Department  : " + department);
+        write.println("University  : " + university); 
+        write.println("  ");
+        
+        write.close();
     }
     
     /**
@@ -143,18 +151,23 @@ public class Student{
      */
     public static void main(String[] args){
     	int n,iD;
+    	double cgpa;
+    	
         //Write your main function to execute call defined methods
     	System.out.println("How many Student ?");
     	n = input.nextInt();
-    	Student student = new Student();
-    	for (int i = 0; i < n; i++) {
-    		System.out.println("-----Update Student " + i+1 +" Information");
+    	Student[] student = new Student[n];
+    	for (int i = 1; i <= n; i++) {
+    		System.out.println("-----Update Student " + i +" Information");
     		System.out.print("Enter ID no : ");
     		iD = input.nextInt();
-    		
+    		student[i] = new Student();
     		try {
-				//student.updateStudentById(iD);
-				student.studentDetailsById();
+				student[i].updateStudentById(iD);
+				student[i].studentDetailsById();
+				student[i].saveStudent();
+				cgpa = student[i].computeCGPAByID();
+				System.out.println("CGPA is : "+cgpa);
 			} catch (Exception e) {
 				
 			}
