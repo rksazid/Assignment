@@ -13,7 +13,7 @@ import java.io.*;
  */
 
 public class Student{
-	static Scanner input = new Scanner(System.in);
+	static Scanner input = new Scanner(System.in);  //Use for Scan data from user
     // Declare the important attributes of a student. For example:
     //1.Id
     //2. Name
@@ -25,10 +25,10 @@ public class Student{
     int id;
     String name,department,university;
     double cgpa;
-    double[][] gpa;
+    double[][] gpa;  // First index used for Year & 2nd in for Semester Ex : gpa[1][2] (first year 2nd semester) 
     String[] subjects;
-    double[][][] credits;
-    double[][][] grades;
+    double[][][] credits; //First index for year 2nd is for semester & 3rd is for Subject number
+    double[][][] grades; //First index for year 2nd is for semester & 3rd is for Subject number
     
     
     
@@ -120,11 +120,12 @@ public class Student{
      */
     public void saveStudent() throws IOException
     {
-    	FileWriter outputFile = new FileWriter("output.txt",true);
+    	FileWriter outputFile = new FileWriter("output.txt",true); //Creat output file
     	
-    	BufferedWriter buffer =new BufferedWriter(outputFile);
+    	BufferedWriter buffer = new BufferedWriter(outputFile); //Creat buffer for write
     	
-    	PrintWriter write = new PrintWriter(buffer);
+    	PrintWriter write = new PrintWriter(buffer); //Creat printWriter obj from buffer
+    	//Write Details in Output text file
     	write.println("  ");
         write.println("Name  : "+name);
         write.println("ID  : " + id);
@@ -153,15 +154,14 @@ public class Student{
     	int n,iD;
     	double cgpa;
     	
-        //Write your main function to execute call defined methods
-    	System.out.println("How many Student ?");
+    	System.out.print("How many Student ? ");
     	n = input.nextInt();
-    	Student[] student = new Student[n];
+    	Student[] student = new Student[n+1]; //Create n+1 object of Student Class
     	for (int i = 1; i <= n; i++) {
     		System.out.println("-----Update Student " + i +" Information");
     		System.out.print("Enter ID no : ");
     		iD = input.nextInt();
-    		student[i] = new Student();
+    		student[i] = new Student(); //Memory allocation for nth student
     		try {
 				student[i].updateStudentById(iD);
 				student[i].studentDetailsById();
