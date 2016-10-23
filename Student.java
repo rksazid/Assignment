@@ -25,10 +25,10 @@ public class Student{
     int id;
     String name,department,university;
     double cgpa;
-    double[][] gpa;  // First index used for Year & 2nd in for Semester Ex : gpa[1][2] (first year 2nd semester) 
-    String[] subjects;
-    double[][][] credits; //First index for year 2nd is for semester & 3rd is for Subject number
-    double[][][] grades; //First index for year 2nd is for semester & 3rd is for Subject number
+    double[] gpa;  //  Index for Semester  
+    String[][][] subjects;
+    double[][] credits; //First index for year 2nd is for semester & 3rd is for Subject number
+    double[][] grades; //First index for year 2nd is for semester & 3rd is for Subject number
     
     
     
@@ -42,9 +42,10 @@ public class Student{
     	name = null;
     	department = null;
     	university = null;
-    	gpa = new double[6][6];
-    	credits = new double[8][8][10];
-    	grades = new double[8][8][10];
+    	subjects = new String[8][8][5];
+    	gpa = new double[8];
+    	credits = new double[8][8];
+    	grades = new double[8][8];
         
     }
     /**
@@ -86,7 +87,17 @@ public class Student{
     	System.out.print("Enter University name : ");
     	university = input.nextLine();
     	System.out.print("Enter Department name : ");
-    	department = input.nextLine();   	 
+    	department = input.nextLine();
+    	for (int i = 0; i < 8; i++) {
+    		System.out.println("Term "+(i+1)+" : ");
+    		for (int j = 0; j < 5; j++) {
+    			System.out.println("#Subject "+ (j+1) +" : ");
+    			System.out.print("Credit : ");
+    			credits[i][j] = input.nextDouble();
+    			System.out.print("Grades : ");
+    			grades[i][j] = input.nextDouble();
+			}
+		}
     }
     
     /**
@@ -108,9 +119,15 @@ public class Student{
     /**
      * Define a method to compute the GPA from the given Credits and Grades of all the subjects
      */
-    public double computeGPAById(){
-        //write yor code here
-        return 0.0;
+    public void computeGPAById(){
+    	double ans = 0,credit = 0;
+        for (int i = 0; i < 8; i++) {
+			for (int j = 0; j<5; j++) {
+				ans += credits[i][j]*grades[i][j];
+				credit +=  credits[i][j];
+			}
+			gpa[i] = ans/credit;
+		}
     }
     
     /**
@@ -154,7 +171,7 @@ public class Student{
     	int n,iD;
     	double cgpa;
     	
-    	System.out.print("How many Student ? ");
+    	System.out.print("How many Student ?  ");
     	n = input.nextInt();
     	Student[] student = new Student[n+1]; //Create n+1 object of Student Class
     	for (int i = 1; i <= n; i++) {
